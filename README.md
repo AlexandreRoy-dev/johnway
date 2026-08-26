@@ -34,7 +34,7 @@ Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 ## Wordmark SVG
 
-Le logo **JOHNWAY.** en Barlow Condensed Bold utilise un espacement serré (sans tracking additionnel), comme sur la signalétique camion. Deux fichiers vectoriels : le point reste vert forêt (`#2f8f55`).
+Le logo **JOHNWAY.** en Barlow Condensed Bold utilise un espacement serré (tracking négatif ~`-0.055em`), calibré sur la signalétique camion.
 
 Pour régénérer les SVG après un changement de tracking ou de police :
 
