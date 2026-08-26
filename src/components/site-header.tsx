@@ -39,7 +39,7 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="/" aria-label="Johnway — accueil">
+        <Link href="/" aria-label="Johnway, accueil">
           <Logo invert />
         </Link>
         <nav className="hidden items-center gap-8 lg:flex">

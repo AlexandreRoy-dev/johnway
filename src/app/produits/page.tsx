@@ -30,7 +30,7 @@ export default function ProduitsPage() {
         </h1>
         <p className="mt-5 max-w-xl text-lg text-muted-foreground">
           Tarifs particuliers, à la journée. Pour un festival, un mariage
-          d’entreprise ou un site municipal, demandez un devis — on assemble le
+          d’entreprise ou un site municipal, demandez un devis : on assemble le
           projet.
         </p>
         <div className="mt-8 flex flex-wrap gap-2">

@@ -19,13 +19,13 @@ const services = [
   {
     n: "03",
     title: "Clé en main",
-    text: "Un interlocuteur. Un devis. Un site qui tient. Mariage, corporatif, municipal — on porte le projet.",
+    text: "Un interlocuteur. Un devis. Un site qui tient. Mariage, corporatif, municipal : on porte le projet.",
     image: "/images/tables.jpg",
   },
   {
     n: "04",
     title: "Animation",
-    text: "DJ, danse, ambiance. En famille avec Winslow Dancers, on ne livre pas que du matériel : on livre la soirée.",
+    text: "DJ, danse, ambiance. On ne livre pas que du matériel : on livre la soirée.",
     image: "/images/festival.jpg",
   },
 ];

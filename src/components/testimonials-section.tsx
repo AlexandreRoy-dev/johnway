@@ -9,7 +9,7 @@ const quotes = [
   },
   {
     quote:
-      "On voulait un mariage dehors sans paraître un camping. Tente stretch, lumière, tables — et quelqu’un qui savait où poser chaque mât. Clé en main, vraiment.",
+      "On voulait un mariage dehors sans paraître un camping. Tente stretch, lumière, tables, et quelqu’un qui savait où poser chaque mât. Clé en main, vraiment.",
     name: "Léa & Antoine",
     role: "Mariage, Magog",
   },

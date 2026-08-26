@@ -21,7 +21,7 @@ export default function ReservationPage() {
         </h1>
         <p className="mt-5 max-w-xl text-lg text-muted-foreground">
           Dates, adresse, matériel. On confirme la disponibilité. L’installation
-          s’ajoute au besoin — elle est déjà incluse sur les chapiteaux.
+          s’ajoute au besoin. Elle est déjà incluse sur les chapiteaux.
         </p>
         <div className="mt-12">
           <ReservationForm />

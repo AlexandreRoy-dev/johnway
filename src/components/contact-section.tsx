@@ -32,7 +32,7 @@ export function ContactSection() {
                 </h3>
                 <p className="mt-2 text-muted-foreground">
                   Choisissez tentes, sono, tables. Prix au jour. Envoyez la
-                  réservation — on confirme les dates.
+                  réservation. On confirme les dates.
                 </p>
               </Link>
               <div className="border border-chocolate-deep bg-chocolate-deep p-6 text-beige">
@@ -44,7 +44,7 @@ export function ContactSection() {
                 </h3>
                 <p className="mt-2 text-beige/75">
                   Un site, une date, un nombre de têtes. On construit le devis
-                  clé en main — pas une facture de quincaillerie.
+                  clé en main, pas une facture de quincaillerie.
                 </p>
               </div>
             </div>

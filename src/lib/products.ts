@@ -48,7 +48,7 @@ export const products: Product[] = [
     image: "/images/wedding-garden.jpg",
     featured: true,
     installIncluded: false,
-    installNote: "Livraison et installation en option — 75 $",
+    installNote: "Livraison et installation en option : 75 $",
     description:
       "Tente pliante professionnelle, structure aluminium et toile 600D. Idéale pour un bar extérieur, un kiosque de festival ou un abri d’accueil. Montage rapide, ancrage compris.",
     includes: ["Structure aluminium", "Toile blanche", "Sacs de transport", "Poids d’ancrage"],
@@ -76,7 +76,7 @@ export const products: Product[] = [
     image: "/images/outdoor-dining.jpg",
     featured: true,
     installIncluded: false,
-    installNote: "Livraison et installation en option — 95 $",
+    installNote: "Livraison et installation en option : 95 $",
     description:
       "Double module 3 × 6 m pour un buffet, un vestiaire ou un espace photo. Toile tendue, look propre, prête pour un mariage de jardin ou un corporatif en terrasse.",
     includes: ["Deux modules couplés", "Toile blanche", "Ancrage", "Sacs de transport"],
@@ -280,7 +280,7 @@ export const products: Product[] = [
     image: "/images/outdoor-dining.jpg",
     featured: false,
     installIncluded: false,
-    installNote: "Mise en place en option — 40 $",
+    installNote: "Mise en place en option : 40 $",
     description:
       "Une table ronde 60 po, nappe sable, dix chaises banquet. Multipliez le pack selon vos invités. Simple, propre, prêt à dresser.",
     includes: ["1 table ronde 60 po", "Nappe", "10 chaises banquet"],
@@ -330,7 +330,7 @@ export const products: Product[] = [
     image: "/images/truck.jpg",
     featured: false,
     installIncluded: false,
-    installNote: "Livraison et mise en route — 65 $",
+    installNote: "Livraison et mise en route : 65 $",
     description:
       "Quand le champ n’a pas de prise. 6500 W insonorisée, assez pour sono, éclairage et bar. On livre, on démarre, on reprend.",
     includes: ["Génératrice 6500 W", "Câbles de distribution", "Pleine d’essence au départ"],

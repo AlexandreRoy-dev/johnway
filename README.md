@@ -2,9 +2,9 @@
 
 Site vitrine de **Johnway**, entreprise d’événementiel clé en main en Estrie (Québec) : location de chapiteaux, tentes, sono et matériel, installation, animation et services connexes.
 
-Positionnement : un seul interlocuteur pour festivals, mariages et événements — du premier camion au dernier toast.
+Positionnement : un seul interlocuteur pour festivals, mariages et événements, du premier camion au dernier toast.
 
-Charte dérivée de la compagnie sœur [Winslow Dancers](https://demo.danseurswinslow.ca/) : beige et brun conservés, orange remplacé par un **vert forêt**, bleu marine remplacé par un **chocolat** plus neutre.
+Charte : beige et brun, accent **vert forêt**, neutres **chocolat**.
 
 ## Lancer en local
 

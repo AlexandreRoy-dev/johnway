@@ -39,9 +39,8 @@ export default function AboutPage() {
             </p>
             <p className="mt-4">
               Location, installation, coordination, animation. Un convoi, une
-              équipe, un responsable. Compagnie sœur de {site.sister.name}, on
-              connaît la fête — et on connaît le vent, la boue, le 30 ampères
-              qui saute à 22 h 40.
+              équipe, un responsable. On connaît la fête, et on connaît le vent,
+              la boue, le 30 ampères qui saute à 22 h 40.
             </p>
             <p className="mt-4">
               Basés en Estrie, on roule partout au Québec. Festivals, mariages,

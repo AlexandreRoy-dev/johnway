@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Winslow sister palette: orange → forest, navy → chocolate, beige/brown kept */
+/* Palette: beige and brown, forest green accent, chocolate neutrals */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

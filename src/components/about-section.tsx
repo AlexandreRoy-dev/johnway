@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import { AnimateIn } from "@/components/animate-in";
-import { site } from "@/lib/site";
 
 const stats = [
   { value: "1", label: "interlocuteur" },
@@ -43,14 +42,14 @@ export function AboutSection() {
           <AnimateIn delay={0.2}>
             <p className="mt-6 text-lg leading-relaxed text-chocolate/90">
               Johnway livre, installe et orchestre. Chapiteaux, tentes, speakers,
-              planchers, lumière — et l’équipe qui fait tenir le tout. Festivals,
+              planchers, lumière, et l’équipe qui fait tenir le tout. Festivals,
               mariages, galas, sites municipaux : on prend le projet, on le pose
               au sol, on le rend spectaculaire.
             </p>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Compagnie sœur de {site.sister.name}. Même exigence, même sens de
-              la fête — un bras opérationnel pour que la soirée ait un toit, un
-              son, et quelqu’un qui sait ce qu’il fait.
+              Même exigence, même sens de la fête : un bras opérationnel pour
+              que la soirée ait un toit, un son, et quelqu’un qui sait ce qu’il
+              fait.
             </p>
           </AnimateIn>
           <div className="mt-10 grid grid-cols-3 gap-4 border-t border-chocolate/15 pt-8">

@@ -59,7 +59,7 @@ export default async function ProductPage({ params }: Props) {
           </p>
           {product.weekendPrice ? (
             <p className="mt-1 text-sm text-chocolate">
-              Week-end (ven.–dim.) : {formatPrice(product.weekendPrice)}
+              Week-end (ven. au dim.) : {formatPrice(product.weekendPrice)}
             </p>
           ) : null}
           <div className="mt-4 flex flex-wrap gap-2">
@@ -92,7 +92,7 @@ export default async function ProductPage({ params }: Props) {
           </h2>
           <ul className="mt-3 space-y-2 text-chocolate/85">
             {product.includes.map((item) => (
-              <li key={item}>— {item}</li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </div>

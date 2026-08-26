@@ -11,18 +11,7 @@ export function SiteFooter() {
           <Logo invert />
           <p className="mt-5 max-w-md text-lg leading-relaxed text-beige/75">
             Location, installation, animation. Un seul interlocuteur pour que
-            votre festival, mariage ou gala tienne debout — et claque.
-          </p>
-          <p className="mt-4 text-sm text-gold">
-            Compagnie sœur de{" "}
-            <a
-              href={site.sister.url}
-              className="underline decoration-forest-bright underline-offset-4"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {site.sister.name}
-            </a>
+            votre festival, mariage ou gala tienne debout, et claque.
           </p>
         </div>
         <div>
