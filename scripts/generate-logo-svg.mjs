@@ -4,7 +4,7 @@ import opentype from "opentype.js";
 
 const FONT_PATH = "/tmp/BarlowCondensed-Bold.ttf";
 const FONT_SIZE = 1000;
-const LETTER_SPACING_EM = 0.18;
+const LETTER_SPACING_EM = 0;
 const LETTER_SPACING = FONT_SIZE * LETTER_SPACING_EM;
 const TEXT = "JOHNWAY.";
 const PERIOD_COLOR = "#2f8f55";
