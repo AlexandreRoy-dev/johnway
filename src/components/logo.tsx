@@ -10,7 +10,7 @@ export function Logo({
   return (
     <span
       className={cn(
-        "inline-flex items-baseline font-display text-[1.7rem] leading-none font-bold tracking-[0.18em] uppercase",
+        "inline-flex items-baseline font-display text-[1.7rem] leading-none font-bold uppercase",
         invert ? "text-beige" : "text-chocolate-deep",
         className,
       )}

@@ -34,7 +34,7 @@ Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 ## Wordmark SVG
 
-Le logo du site, **JOHNWAY.** en Barlow Condensed Bold avec `letter-spacing: 0.18em` (comme le composant `Logo`), est fourni en deux fichiers vectoriels. Le point reste vert forêt (`#2f8f55`) dans les deux versions.
+Le logo **JOHNWAY.** en Barlow Condensed Bold utilise un espacement serré (sans tracking additionnel), comme sur la signalétique camion. Deux fichiers vectoriels : le point reste vert forêt (`#2f8f55`).
 
 Pour régénérer les SVG après un changement de tracking ou de police :
 
