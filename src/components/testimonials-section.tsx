@@ -15,7 +15,7 @@ const quotes = [
   },
   {
     quote:
-      "Un seul devis, un seul responsable, zéro surprise la veille. Pour un corporatif de 180 personnes, c’est ça le luxe.",
+      "Un interlocuteur, un devis, zéro surprise la veille. Pour un corporatif de 180 personnes, c’est ça le luxe.",
     name: "Marc-André B.",
     role: "Événementiel, entreprise manufacturière",
   },
