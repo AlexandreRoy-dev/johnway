@@ -4,10 +4,10 @@ import opentype from "opentype.js";
 
 const FONT_PATH = "/tmp/BarlowCondensed-Bold.ttf";
 const FONT_SIZE = 1000;
-const LETTER_SPACING_EM = -0.055;
-const LETTER_SPACING = FONT_SIZE * LETTER_SPACING_EM;
+const LETTER_SPACING = FONT_SIZE * -0.055;
 const TEXT = "JOHNWAY.";
 const PERIOD_COLOR = "#2f8f55";
+const PAD = 20;
 
 const variants = [
   { name: "johnway-logo-dark.svg", fill: "#2d2d2d" },
@@ -17,14 +17,15 @@ const variants = [
 const fontBuffer = fs.readFileSync(FONT_PATH);
 const font = opentype.parse(fontBuffer.buffer);
 const scale = FONT_SIZE / font.unitsPerEm;
+const baseline = (font.ascender / font.unitsPerEm) * FONT_SIZE;
 
 let x = 0;
 const paths = [];
+let previousGlyph = null;
 let minX = Infinity;
 let minY = Infinity;
 let maxX = -Infinity;
 let maxY = -Infinity;
-let previousGlyph = null;
 
 for (let index = 0; index < TEXT.length; index += 1) {
   const char = TEXT[index];
@@ -34,7 +35,7 @@ for (let index = 0; index < TEXT.length; index += 1) {
     x += font.getKerningValue(previousGlyph, glyph) * scale;
   }
 
-  const glyphPath = glyph.getPath(x, 0, FONT_SIZE);
+  const glyphPath = glyph.getPath(x, baseline, FONT_SIZE);
   const bbox = glyphPath.getBoundingBox();
 
   minX = Math.min(minX, bbox.x1);
@@ -48,31 +49,27 @@ for (let index = 0; index < TEXT.length; index += 1) {
   });
 
   x += glyph.advanceWidth * scale;
-  if (index < TEXT.length - 1) {
-    x += LETTER_SPACING;
-  }
-
+  if (index < TEXT.length - 1) x += LETTER_SPACING;
   previousGlyph = glyph;
 }
 
-const padding = FONT_SIZE * 0.04;
-const offsetX = padding - minX;
-const offsetY = padding - minY;
-const viewWidth = maxX - minX + padding * 2;
-const viewHeight = maxY - minY + padding * 2;
+const width = Math.ceil(maxX - minX + PAD * 2);
+const height = Math.ceil(maxY - minY + PAD * 2);
 
 function buildSvg(fill) {
   const pathMarkup = paths
     .map(({ data, fill: overrideFill }) => {
       const color = overrideFill ?? fill;
-      return `  <path fill="${color}" transform="translate(${offsetX.toFixed(2)} ${offsetY.toFixed(2)}) scale(1 -1)" d="${data}"/>`;
+      return `  <path fill="${color}" d="${data}"/>`;
     })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth.toFixed(2)} ${viewHeight.toFixed(2)}" role="img" aria-label="Johnway.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Johnway.">
   <title>Johnway.</title>
+  <g transform="translate(${(-minX + PAD).toFixed(2)} ${(-minY + PAD).toFixed(2)})">
 ${pathMarkup}
+  </g>
 </svg>
 `;
 }
@@ -81,7 +78,6 @@ const outputDir = path.resolve("public/brand");
 fs.mkdirSync(outputDir, { recursive: true });
 
 for (const variant of variants) {
-  const svg = buildSvg(variant.fill);
-  fs.writeFileSync(path.join(outputDir, variant.name), svg);
-  console.log(`Wrote ${variant.name}`);
+  fs.writeFileSync(path.join(outputDir, variant.name), buildSvg(variant.fill));
+  console.log(`Wrote ${variant.name} (${width}x${height})`);
 }
