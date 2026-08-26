@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { submitForm } from "@/lib/forms";
 import { formatPrice } from "@/lib/format";
 
 export function ReservationForm() {
@@ -44,12 +45,7 @@ export function ReservationForm() {
     };
 
     try {
-      const response = await fetch("/api/reservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error("fail");
+      await submitForm({ form: "reservation", ...payload });
       setStatus("success");
       setMessage(
         "Réservation envoyée. On confirme la disponibilité et les détails de livraison sous 24 h.",

@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
+import { submitForm } from "@/lib/forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,12 +54,7 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
     };
 
     try {
-      const response = await fetch("/api/devis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error("fail");
+      await submitForm({ form: "devis", ...payload });
       setStatus("success");
       setMessage(
         "Devis reçu. On revient vers vous sous 24 h avec une proposition clé en main.",
