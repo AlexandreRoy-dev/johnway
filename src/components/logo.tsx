@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 export function Logo({
@@ -8,15 +10,13 @@ export function Logo({
   invert?: boolean;
 }) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-baseline font-display text-[1.7rem] leading-none font-bold tracking-[-0.055em] uppercase",
-        invert ? "text-beige" : "text-chocolate-deep",
-        className,
-      )}
-    >
-      Johnway
-      <span className={invert ? "text-forest-bright" : "text-forest"}>.</span>
-    </span>
+    <Image
+      src={invert ? "/brand/johnway-logo-light.svg" : "/brand/johnway-logo-dark.svg"}
+      alt="Johnway."
+      width={3184}
+      height={756}
+      priority
+      className={cn("h-[1.7rem] w-auto", className)}
+    />
   );
 }
