@@ -21,17 +21,20 @@ export function AnimateIn({
 
     node.style.setProperty("--d", `${delay}s`);
 
-    const inView = () => {
-      const rect = node.getBoundingClientRect();
-      return rect.top < window.innerHeight * 0.88 && rect.bottom > 64;
-    };
-
     const reveal = () => {
       node.classList.add("is-in");
       node.classList.remove("will-animate");
     };
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || inView()) {
+    const inView = () => {
+      const rect = node.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      inView()
+    ) {
       reveal();
       return;
     }
@@ -45,11 +48,17 @@ export function AnimateIn({
           observer.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+
+    const failsafe = window.setTimeout(reveal, 1800);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(failsafe);
+    };
   }, [delay]);
 
   return (
