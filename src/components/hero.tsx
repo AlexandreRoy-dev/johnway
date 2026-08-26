@@ -70,9 +70,7 @@ export function Hero() {
             style={{ ["--d" as string]: "0.65s" }}
           >
             On s’occupe{" "}
-            <em className="font-serif font-medium tracking-normal text-forest-bright lowercase not-italic sm:italic">
-              du reste.
-            </em>
+            <span className="text-forest-bright">du reste.</span>
           </span>
         </h1>
         <p
