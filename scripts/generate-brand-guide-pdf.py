@@ -14,6 +14,10 @@ OUTPUT = ROOT / "public" / "johnway-guide-image-de-marque.pdf"
 LOGO_DARK = ROOT / "public" / "images" / "johnway-logo-dark.png"
 LOGO_LIGHT = ROOT / "public" / "images" / "johnway-logo-light.png"
 TRUCK_MOCKUP = ROOT / "public" / "images" / "johnway-white-truck-mockup.png"
+HERO_POSTER = ROOT / "public" / "images" / "hero-poster.jpg"
+EQUIPE = ROOT / "public" / "images" / "equipe.jpg"
+FESTIVAL = ROOT / "public" / "images" / "festival.jpg"
+TENT = ROOT / "public" / "images" / "tent-exterieur.jpg"
 
 BRAND = [
     ("Vert forêt", "forest", "#1F5C3A", "Couleur primaire, titres, liens"),
@@ -44,13 +48,18 @@ UI = [
 ]
 
 TOC = [
-    ("01", "Positionnement"),
+    ("01", "Positionnement et promesse"),
     ("02", "Logo"),
     ("03", "Couleurs"),
     ("04", "Typographie"),
     ("05", "Ton et rédaction"),
-    ("06", "Applications"),
-    ("07", "Contact"),
+    ("06", "Photographie et visuels"),
+    ("07", "Composants UI"),
+    ("08", "Grille, formes et motion"),
+    ("09", "Applications"),
+    ("10", "Offre et messages"),
+    ("11", "Contact et ressources"),
+    ("A", "Annexes"),
 ]
 
 
@@ -102,7 +111,7 @@ class BrandGuidePDF(FPDF):
         self.set_y(118)
         self.set_font("Barlow", "B", 14)
         self.set_text_color(47, 143, 85)
-        self.cell(0, 10, "GUIDE D'IMAGE DE MARQUE", align="C", new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 10, "GUIDE COMPLET D'IMAGE DE MARQUE", align="C", new_x="LMARGIN", new_y="NEXT")
 
         self.set_font("Work", "", 12)
         self.set_text_color(244, 235, 207)
@@ -154,12 +163,13 @@ class BrandGuidePDF(FPDF):
         self.set_font("Work", "", 10)
         self.set_text_color(74, 44, 26)
         self.multi_cell(
-            0,
+            self.content_width(),
             6,
-            "Ce document décrit l'identité visuelle et verbale de Johnway : "
-            "positionnement, logo, couleurs, typographies, ton rédactionnel et "
-            "applications. Il s'appuie sur le site johnway.ca et les fichiers "
-            "de marque du dépôt public.",
+            "Ce document est la charte complète de Johnway : identité visuelle, "
+            "typographies, ton rédactionnel, composants d'interface, photographie, "
+            "motion et applications sur tous les supports. "
+            "Il remplace et inclut la palette de couleurs (johnway-palette-couleurs.pdf). "
+            "Référence : johnway.ca · Version 1.0 · Août 2026.",
         )
 
     def section_cover(self, num: str, title: str, subtitle: str) -> None:
@@ -187,11 +197,36 @@ class BrandGuidePDF(FPDF):
         self.line(10, self.get_y(), 200, self.get_y())
         self.ln(5)
 
+    def content_width(self) -> float:
+        return self.w - self.l_margin - self.r_margin
+
     def body(self, text: str, size: int = 10) -> None:
         self.set_font("Work", "", size)
         self.set_text_color(26, 16, 12)
-        self.multi_cell(0, 5.5, text)
+        self.multi_cell(self.content_width(), 5.5, text)
         self.ln(2)
+
+    def ensure_space(self, height: float) -> None:
+        if self.get_y() + height > 275:
+            self.add_page()
+
+    def image_row(self, images: list[tuple[Path, str]], img_h: float = 52) -> None:
+        self.ensure_space(img_h + 14)
+        y = self.get_y()
+        count = len(images)
+        gap = 4
+        total_w = self.content_width()
+        cell_w = (total_w - gap * (count - 1)) / count
+        x = self.l_margin
+        for path, caption in images:
+            if path.exists():
+                self.image(str(path), x=x, y=y, w=cell_w, h=img_h)
+            self.set_xy(x, y + img_h + 2)
+            self.set_font("Work", "", 7)
+            self.set_text_color(107, 83, 68)
+            self.multi_cell(cell_w, 3.5, caption, align="C")
+            x += cell_w + gap
+        self.set_y(y + img_h + 12)
 
     def label(self, text: str) -> None:
         self.set_font("Barlow", "B", 8)
@@ -313,6 +348,13 @@ class BrandGuidePDF(FPDF):
             "Positionnement",
             "Qui est Johnway, ce qu'on promet, et comment on se distingue sur le terrain.",
         )
+        self.section_title("Mission")
+        self.body(
+            "Rendre chaque événement possible, du chapiteau au dancefloor, "
+            "avec une seule équipe responsable. Johnway transforme un terrain, "
+            "un parc ou un stationnement en site prêt à recevoir — sans que "
+            "le client doive coordonner une douzaine de fournisseurs."
+        )
         self.section_title("Promesse de marque")
         self.quote_block(
             "Votre événement. On s'occupe du reste.",
@@ -324,6 +366,17 @@ class BrandGuidePDF(FPDF):
             "tentes, sono, scène, lumière et animation — avec un seul interlocuteur "
             "du devis au démontage."
         )
+        self.section_title("Valeurs")
+        values = [
+            ("Fiabilité", "Un site qui tient. Un horaire respecté. Un démontage propre."),
+            ("Simplicité", "Un interlocuteur, un devis, zéro surprise."),
+            ("Présence terrain", "On livre, on installe, on reste jusqu'à ce que ça fonctionne."),
+            ("Fête maîtrisée", "L'ambiance compte autant que la structure."),
+        ]
+        for title, desc in values:
+            self.label(title)
+            self.body(desc)
+
         self.section_title("Archétype et personnalité")
         self.bullet_list(
             [
@@ -348,7 +401,7 @@ class BrandGuidePDF(FPDF):
             self.cell(0, 7, msg.upper(), new_x="LMARGIN", new_y="NEXT")
             self.ln(2)
 
-        self.section_title("Audiences")
+        self.section_title("Audiences et secteurs")
         self.bullet_list(
             [
                 "Festivals et événements culturels",
@@ -356,6 +409,331 @@ class BrandGuidePDF(FPDF):
                 "Événements corporatifs et galas",
                 "Sites municipaux et institutions",
             ]
+        )
+        self.section_title("Territoire")
+        self.body(
+            "Basés en Estrie, actifs partout au Québec : Montérégie, "
+            "Centre-du-Québec, Montréal et au-delà. Message d'ancrage : "
+            "« Estrie · Québec — On roule. »"
+        )
+
+    def photography_section(self) -> None:
+        self.section_cover(
+            "06",
+            "Photographie",
+            "Style visuel, sujets, cadrage et traitement des images de marque.",
+        )
+        self.section_title("Direction photographique")
+        self.body(
+            "Les visuels Johnway montrent le terrain : équipes en action, "
+            "matériel installé, foule, lumière du soir. L'esthétique est "
+            "documentaire et chaleureuse — jamais stock photo générique."
+        )
+        self.section_title("Sujets privilégiés")
+        self.bullet_list(
+            [
+                "Convoi et livraison (camions, remorques, équipe)",
+                "Installation en cours (chapiteaux, tentes, sono, scène)",
+                "Sites montés (festivals, mariages, corporatif)",
+                "Détails matériel (câbles, ancrages, lumière, mobilier)",
+                "Ambiance événement (foule, danse, tables, extérieur)",
+            ]
+        )
+        self.section_title("Exemples visuels")
+        self.image_row(
+            [
+                (HERO_POSTER, "Hero · convoi et site"),
+                (EQUIPE, "Équipe en opération"),
+            ]
+        )
+        self.image_row(
+            [
+                (FESTIVAL, "Festival · site monté"),
+                (TENT, "Chapiteau · extérieur"),
+            ]
+        )
+        self.section_title("Traitement et overlays")
+        self.bullet_list(
+            [
+                "Dégradé hero : vert profond vers chocolat profond (video-grade)",
+                "Grain léger en overlay sur vidéos et hero (opacity ~18 %)",
+                "Texte sur photo : toujours avec overlay sombre pour le contraste",
+                "Pas de filtres Instagram, pas de saturation excessive",
+                "Lumière naturelle privilégiée ; soirée = chaleur dorée acceptable",
+            ]
+        )
+        self.two_column_do_dont(
+            "À faire",
+            [
+                "Montrer l'échelle (chapiteau, foule, camion)",
+                "Capturer l'action (lever, câbler, ancrer)",
+                "Varier les contextes (mariage, festival, corporatif)",
+                "Garder des visages et des mains visibles",
+            ],
+            "À éviter",
+            [
+                "Photos vides de stock sans contexte québécois",
+                "Images floues ou mal exposées",
+                "Retouches qui changent les couleurs de marque",
+                "Texte posé directement sur photo sans overlay",
+            ],
+        )
+
+    def ui_section(self) -> None:
+        self.section_cover(
+            "07",
+            "Composants UI",
+            "Boutons, formulaires, cartes et patterns du site johnway.ca.",
+        )
+        self.section_title("Boutons")
+        self.body(
+            "Les boutons principaux sont uppercase, Barlow Condensed Bold, "
+            "tracking 0.18em, hauteur ~56 px (h-14), coins arrondis (rounded-md)."
+        )
+        y = self.get_y()
+        self.set_fill_color(47, 143, 85)
+        self.rect(10, y, 88, 14, style="F")
+        self.set_draw_color(244, 235, 207)
+        self.set_line_width(0.4)
+        self.rect(10, y + 18, 88, 14, style="D")
+        self.set_xy(10, y + 3.5)
+        self.set_font("Barlow", "B", 9)
+        self.set_text_color(244, 235, 207)
+        self.cell(88, 7, "RESERVER DU MATERIEL", align="C")
+        self.set_xy(10, y + 21.5)
+        self.set_text_color(244, 235, 207)
+        self.cell(88, 7, "DEVIS ENTREPRISE", align="C")
+        self.set_xy(102, y)
+        self.set_font("Work", "", 9)
+        self.set_text_color(26, 16, 12)
+        self.multi_cell(88, 5, "Primaire\n#2F8F55 fond · beige texte\nhover #1F5C3A")
+        self.set_xy(102, y + 18)
+        self.multi_cell(88, 5, "Secondaire\nContour beige/40 · fond transparent\nhover fond beige")
+        self.set_y(y + 40)
+
+        self.section_title("Formulaires et champs")
+        self.bullet_list(
+            [
+                "Fond carte : #FAF6EC · bordure #E0D4B8",
+                "Labels : Work Sans, chocolat profond",
+                "Placeholder : texte atténué #6B5344",
+                "Focus : anneau vert forêt (#1F5C3A)",
+                "Erreur : #9F2D20 (destructive)",
+                "Envoi : FormSubmit vers info@johnway.ca",
+            ]
+        )
+
+        self.section_title("Cartes et sections")
+        self.bullet_list(
+            [
+                "Alternance de fonds : crème, beige, chocolat profond, vert profond",
+                "Cartes produit : fond #FAF6EC, image pleine largeur, texte Work Sans",
+                "Badges / surtitres : uppercase, tracking large, vert forêt ou or",
+                "Marquee services : Barlow Bold, beige sur vert profond, séparateur / vert vif",
+                "Témoignages : bordure white/10, fond chocolat/40, quote Fraunces italic",
+            ]
+        )
+
+        self.section_title("Navigation")
+        self.bullet_list(
+            [
+                "Header fixe : fond chocolat profond, logo clair SVG, liens beige",
+                "Footer : même fond, colonnes Produits / Entreprise / Contact",
+                "Scroll doux : 800 ms avec offset header (~5.5 rem)",
+                "CTA header : « Réserver » vert forêt vif",
+            ]
+        )
+
+    def layout_motion_section(self) -> None:
+        self.section_cover(
+            "08",
+            "Grille et motion",
+            "Espacements, rayons, animations et principes de mouvement.",
+        )
+        self.section_title("Grille et espacements")
+        self.bullet_list(
+            [
+                "Conteneur max : 80 rem (max-w-7xl), padding 1.25–2 rem",
+                "Sections : py-24 (96 px) vertical",
+                "Grilles : 2–3 colonnes desktop, 1 colonne mobile",
+                "Gap cartes : 1.25 rem (gap-5) à 1.5 rem",
+            ]
+        )
+        self.section_title("Rayons (border-radius)")
+        radii = [
+            ("sm", "2 px", "Détails fins"),
+            ("md", "4 px", "Champs, petits éléments"),
+            ("lg / défaut", "6 px", "Boutons site (rounded-md ~4 px)"),
+            ("xl a 4xl", "10-22 px", "Cartes larges, modales"),
+        ]
+        for token, px, usage in radii:
+            self.label(f"{token} · {px}")
+            self.body(usage)
+
+        self.section_title("Motion — principes")
+        self.body(
+            "Le mouvement Johnway est calme et professionnel : des entrées "
+            "au scroll, jamais de boucle décorative bruyante. Présence progressive, "
+            "pas de parallax ni de bounce."
+        )
+        self.bullet_list(
+            [
+                "Entrée par défaut : fade-up (opacity 0 a 1, translateY 50 px a 0)",
+                "Durée : 0.7 s · easing cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                "Stagger groupes : ~0.3 s entre éléments (data-animation-delay)",
+                "Hero : lignes décalées (0.1 s a 1.2 s)",
+                "Marquee : défilement linéaire 28 s (services)",
+                "prefers-reduced-motion : désactiver toutes les animations",
+            ]
+        )
+        self.section_title("Hiérarchie typographique — échelle")
+        scale = [
+            ("H1 hero", "Barlow Bold", "clamp 3.4–8.75 rem", "Uppercase, tracking tight"),
+            ("H2 section", "Barlow Bold", "clamp 2.6–5.5 rem", "Uppercase"),
+            ("H3 carte", "Barlow Bold", "~2.25–2.5 rem", "Uppercase"),
+            ("Surtitre", "Barlow SemiBold", "0.75 rem", "Uppercase, tracking 0.32 em"),
+            ("Corps", "Work Sans", "1–1.125 rem", "Regular, leading relaxed"),
+            ("Bouton", "Barlow Bold", "0.78 rem", "Uppercase, tracking 0.18 em"),
+            ("Citation", "Fraunces Italic", "1.5 rem", "Témoignages"),
+        ]
+        self.set_font("Barlow", "B", 8)
+        self.set_fill_color(239, 230, 208)
+        self.set_text_color(26, 16, 12)
+        for h, w in [("Élément", 36), ("Police", 36), ("Taille", 40), ("Style", 78)]:
+            self.cell(w, 7, h, border=1, fill=True)
+        self.ln()
+        self.set_font("Work", "", 8)
+        for row in scale:
+            for i, val in enumerate(row):
+                w = [36, 36, 40, 78][i]
+                self.cell(w, 8, val, border=1)
+            self.ln()
+
+    def offer_section(self) -> None:
+        self.section_cover(
+            "10",
+            "Offre et messages",
+            "Services, produits et formulations types pour la communication.",
+        )
+        self.section_title("Piliers de service")
+        services = [
+            ("01 · Location", "Chapiteaux, tentes, sono, scène, mobilier, lumière, génératrices."),
+            ("02 · Installation", "Convoi, ancrage, câblage, alignement. Démontage inclus."),
+            ("03 · Clé en main", "Un interlocuteur, un devis, un site qui tient."),
+            ("04 · Animation", "DJ, danse, ambiance — on livre la soirée, pas seulement le matériel."),
+        ]
+        for title, desc in services:
+            self.label(title)
+            self.body(desc)
+
+        self.section_title("Produits phares (site)")
+        self.bullet_list(
+            [
+                "Chapiteaux 5×10 et 10×20",
+                "Tentes pliantes 3×3 et 3×6, tente stretch, pagode 5×5",
+                "Sono 200 et 500, éclairage ambiance",
+                "Plancher danse, tables/chaises, génératrice 6500",
+            ]
+        )
+
+        self.section_title("Formulations types")
+        templates = [
+            ("Accroche site", "Événementiel clé en main"),
+            ("Punchline", "Votre événement. On s'occupe du reste."),
+            ("Description SEO", (
+                "Location de chapiteaux, tentes, sono et matériel événementiel. "
+                "Installation, animation et coordination pour festivals, mariages "
+                "et événements partout au Québec."
+            )),
+            ("CTA principal", "Réserver du matériel · Lancer un événement · Devis entreprise"),
+            ("Signature courriel", "Johnway · Événementiel clé en main · johnway.ca"),
+        ]
+        for label_text, sample in templates:
+            self.label(label_text)
+            self.set_font("Work", "", 9)
+            self.set_text_color(26, 16, 12)
+            self.multi_cell(self.content_width(), 5, sample)
+            self.ln(2)
+
+        self.section_title("Témoignages — ton à reproduire")
+        self.quote_block(
+            "Un seul devis, un seul responsable, zéro surprise la veille.",
+            "Corporatif · 180 personnes",
+        )
+
+    def annexes_section(self) -> None:
+        self.add_page()
+        self.set_fill_color(15, 51, 34)
+        self.rect(0, 0, 210, 45, style="F")
+        self.set_y(14)
+        self.set_font("Barlow", "B", 28)
+        self.set_text_color(244, 235, 207)
+        self.cell(0, 12, "ANNEXES", new_x="LMARGIN", new_y="NEXT")
+        self.set_font("Work", "", 10)
+        self.set_text_color(196, 165, 116)
+        self.cell(0, 6, "Référence rapide · checklist · fichiers")
+        self.set_y(55)
+
+        self.section_title("Résumé couleurs (hex)")
+        for line in [
+            "Vert forêt        #1F5C3A    Vert forêt vif    #2F8F55",
+            "Vert profond      #0F3322    Chocolat          #4A2C1A",
+            "Chocolat profond  #1A100C    Beige             #F4EBCF",
+            "Crème             #F8F3E6    Or                #C4A574",
+            "Brun Winslow      #261A10    Logo sombre       #2D2D2D",
+        ]:
+            self.set_font("Work", "", 9)
+            self.cell(0, 5.5, line, new_x="LMARGIN", new_y="NEXT")
+        self.ln(4)
+
+        self.section_title("Checklist avant publication")
+        self.bullet_list(
+            [
+                "Logo SVG officiel (clair ou sombre selon fond)",
+                "Couleurs hex exactes, pas de variantes approximatives",
+                "Barlow Condensed pour titres, Work Sans pour corps",
+                "Ton direct, québécois, phrases courtes",
+                "Photos terrain avec contraste suffisant",
+                "CTA en uppercase avec tracking",
+                "Coordonnées : info@johnway.ca · johnway.ca",
+            ]
+        )
+
+        self.section_title("Polices — sources")
+        self.bullet_list(
+            [
+                "Barlow Condensed : fonts.google.com/specimen/Barlow+Condensed",
+                "Work Sans : fonts.google.com/specimen/Work+Sans",
+                "Fraunces : fonts.google.com/specimen/Fraunces",
+                "PDF embarqué : scripts/fonts/",
+            ]
+        )
+
+        self.section_title("Scripts de génération")
+        self.bullet_list(
+            [
+                "python3 scripts/generate-brand-guide-pdf.py  -> ce document",
+                "python3 scripts/generate-palette-pdf.py        -> palette seule",
+                "npm run generate:logos                         -> SVG logo",
+            ]
+        )
+
+        self.ln(4)
+        self.set_fill_color(248, 243, 230)
+        y = self.get_y()
+        self.rect(10, y, 190, 30, style="F")
+        self.set_xy(14, y + 6)
+        self.set_font("Barlow", "B", 12)
+        self.set_text_color(31, 92, 58)
+        self.cell(0, 6, "JOHNWAY. — DOCUMENT COMPLET")
+        self.set_xy(14, y + 14)
+        self.set_font("Work", "", 9)
+        self.set_text_color(26, 16, 12)
+        self.multi_cell(
+            182,
+            5,
+            "Guide d'image de marque v1.0 · Inclut palette, logo, typo, ton, UI, "
+            "photo, motion et applications. johnway.ca/johnway-guide-image-de-marque.pdf",
         )
 
     def logo_section(self) -> None:
@@ -605,7 +983,7 @@ class BrandGuidePDF(FPDF):
 
     def applications_section(self) -> None:
         self.section_cover(
-            "06",
+            "09",
             "Applications",
             "Web, signalétique, documents et cohérence visuelle sur tous les supports.",
         )
@@ -661,7 +1039,7 @@ class BrandGuidePDF(FPDF):
 
     def contact_section(self) -> None:
         self.section_cover(
-            "07",
+            "11",
             "Contact",
             "Coordonnées et ressources pour appliquer la charte.",
         )
@@ -709,8 +1087,13 @@ def main() -> None:
     pdf.colors_section()
     pdf.typography_section()
     pdf.tone_section()
+    pdf.photography_section()
+    pdf.ui_section()
+    pdf.layout_motion_section()
     pdf.applications_section()
+    pdf.offer_section()
     pdf.contact_section()
+    pdf.annexes_section()
     pdf.output(str(OUTPUT))
     print(f"Wrote {OUTPUT}")
 
