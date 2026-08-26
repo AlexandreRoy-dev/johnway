@@ -161,17 +161,14 @@ class BrandGuidePDF(FPDF):
             self.line(10, self.get_y(), 200, self.get_y())
             self.ln(4)
 
-        self.ln(8)
-        self.set_font("Work", "", 10)
+        self.ln(6)
+        self.set_font("Work", "", 9)
         self.set_text_color(74, 44, 26)
         self.multi_cell(
             self.content_width(),
-            6,
-            "Ce document est la charte complète de Johnway : identité visuelle, "
-            "typographies, ton rédactionnel, composants d'interface, photographie, "
-            "motion et applications sur tous les supports. "
-            "Il remplace et inclut la palette de couleurs (johnway-palette-couleurs.pdf). "
-            "Référence : johnway.ca · Version 1.0 · Août 2026.",
+            5,
+            "Charte complète Johnway : identité visuelle, typographies, ton, UI, photo et applications. "
+            "Inclut la palette de couleurs. johnway.ca · v1.0 · Août 2026.",
         )
 
     def section_cover(self, num: str, title: str, subtitle: str) -> None:
@@ -285,6 +282,31 @@ class BrandGuidePDF(FPDF):
         y_end_dont = self.get_y()
         self.set_y(max(y_end_do, y_end_dont) + 4)
 
+    def promise_block(self, text: str, attribution: str = "") -> None:
+        if ". " in text:
+            first, second = text.split(". ", 1)
+            lines = [f"{first}.", second]
+        else:
+            lines = [text]
+
+        block_h = 8 + len(lines) * 9 + (7 if attribution else 2)
+        self.set_fill_color(15, 51, 34)
+        y = self.get_y()
+        self.rect(10, y, 190, block_h, style="F")
+        line_y = y + 7
+        for index, line in enumerate(lines):
+            self.set_xy(16, line_y)
+            self.set_font("Barlow", "B", 17 if index == 0 else 16)
+            self.set_text_color(244, 235, 207)
+            self.cell(178, 8, line.upper())
+            line_y += 9
+        if attribution:
+            self.set_xy(16, y + block_h - 7)
+            self.set_font("Barlow", "B", 8)
+            self.set_text_color(196, 165, 116)
+            self.cell(0, 5, attribution.upper())
+        self.set_y(y + block_h + 4)
+
     def quote_block(self, text: str, attribution: str = "") -> None:
         self.set_fill_color(15, 51, 34)
         y = self.get_y()
@@ -345,27 +367,22 @@ class BrandGuidePDF(FPDF):
             self.ln()
 
     def positioning(self) -> None:
-        self.section_cover(
-            "01",
-            "Positionnement",
-            "Qui est Johnway, ce qu'on promet, et comment on se distingue sur le terrain.",
-        )
         self.section_title("Mission")
         self.body(
             "Rendre chaque événement possible, du chapiteau au dancefloor, "
             "avec une seule équipe responsable. Johnway transforme un terrain, "
-            "un parc ou un stationnement en site prêt à recevoir — sans que "
+            "un parc ou un stationnement en site prêt à recevoir, sans que "
             "le client doive coordonner une douzaine de fournisseurs."
         )
         self.section_title("Promesse de marque")
-        self.quote_block(
+        self.promise_block(
             "Votre événement. On s'occupe du reste.",
             "Punchline · johnway.ca",
         )
         self.body(
             "Johnway est une entreprise d'événementiel clé en main basée en Estrie, "
             "active partout au Québec. On livre, installe et orchestre chapiteaux, "
-            "tentes, sono, scène, lumière et animation — avec un seul interlocuteur "
+            "tentes, sono, scène, lumière et animation, avec un seul interlocuteur "
             "du devis au démontage."
         )
         self.section_title("Valeurs")
@@ -382,7 +399,7 @@ class BrandGuidePDF(FPDF):
         self.section_title("Archétype et personnalité")
         self.bullet_list(
             [
-                "Opérationnel et concret : on parle de camions, de convois, de sites qui se lèvent.",
+                "Opérationnel et concret : on parle d'installation, de sites qui se lèvent, de matériel qui tient.",
                 "Confiant sans arrogance : on sait ce qu'on fait, on le prouve sur le terrain.",
                 "Festif mais professionnel : mariages, festivals, corporatif, municipal : même exigence.",
                 "Québécois : français du Québec, direct, sans jargon inutile.",
@@ -393,8 +410,8 @@ class BrandGuidePDF(FPDF):
             ("Événementiel clé en main", "Tagline principale"),
             ("Pas un garage. Une opération.", "Différenciation"),
             ("Un interlocuteur. Un devis. Un site qui tient.", "Promesse processus"),
-            ("Les camions arrivent. Le site se lève. Vous célébrez.", "Récit terrain"),
-            ("Estrie · Québec — On roule.", "Ancrage géographique"),
+            ("On installe. Le site se lève. Vous célébrez.", "Récit terrain"),
+            ("Estrie · Québec · On roule.", "Ancrage géographique"),
         ]
         for msg, desc in items:
             self.label(desc)
@@ -416,7 +433,7 @@ class BrandGuidePDF(FPDF):
         self.body(
             "Basés en Estrie, actifs partout au Québec : Montérégie, "
             "Centre-du-Québec, Montréal et au-delà. Message d'ancrage : "
-            "« Estrie · Québec — On roule. »"
+            "« Estrie · Québec · On roule. »"
         )
 
     def photography_section(self) -> None:
@@ -429,12 +446,12 @@ class BrandGuidePDF(FPDF):
         self.body(
             "Les visuels Johnway montrent le terrain : équipes en action, "
             "matériel installé, foule, lumière du soir. L'esthétique est "
-            "documentaire et chaleureuse — jamais stock photo générique."
+            "documentaire et chaleureuse, jamais stock photo générique."
         )
         self.section_title("Sujets privilégiés")
         self.bullet_list(
             [
-                "Convoi et livraison (camions, remorques, équipe)",
+                "Livraison et logistique (équipe, matériel, préparation)",
                 "Installation en cours (chapiteaux, tentes, sono, scène)",
                 "Sites montés (festivals, mariages, corporatif)",
                 "Détails matériel (câbles, ancrages, lumière, mobilier)",
@@ -444,7 +461,7 @@ class BrandGuidePDF(FPDF):
         self.section_title("Exemples visuels")
         self.image_row(
             [
-                (HERO_POSTER, "Hero · convoi et site"),
+                (HERO_POSTER, "Hero · site événementiel"),
                 (EQUIPE, "Équipe en opération"),
             ]
         )
@@ -467,7 +484,7 @@ class BrandGuidePDF(FPDF):
         self.two_column_do_dont(
             "À faire",
             [
-                "Montrer l'échelle (chapiteau, foule, camion)",
+                "Montrer l'échelle (chapiteau, foule, site complet)",
                 "Capturer l'action (lever, câbler, ancrer)",
                 "Varier les contextes (mariage, festival, corporatif)",
                 "Garder des visages et des mains visibles",
@@ -572,7 +589,7 @@ class BrandGuidePDF(FPDF):
             self.label(f"{token} · {px}")
             self.body(usage)
 
-        self.section_title("Motion — principes")
+        self.section_title("Motion et principes")
         self.body(
             "Le mouvement Johnway est calme et professionnel : des entrées "
             "au scroll, jamais de boucle décorative bruyante. Présence progressive, "
@@ -588,7 +605,7 @@ class BrandGuidePDF(FPDF):
                 "prefers-reduced-motion : désactiver toutes les animations",
             ]
         )
-        self.section_title("Hiérarchie typographique — échelle")
+        self.section_title("Hiérarchie typographique")
         scale = [
             ("H1 hero", "Barlow Bold", "clamp 3.4–8.75 rem", "Uppercase, tracking tight"),
             ("H2 section", "Barlow Bold", "clamp 2.6–5.5 rem", "Uppercase"),
@@ -620,9 +637,9 @@ class BrandGuidePDF(FPDF):
         self.section_title("Piliers de service")
         services = [
             ("01 · Location", "Chapiteaux, tentes, sono, scène, mobilier, lumière, génératrices."),
-            ("02 · Installation", "Convoi, ancrage, câblage, alignement. Démontage inclus."),
+            ("02 · Installation", "Livraison, ancrage, câblage, alignement. Démontage inclus."),
             ("03 · Clé en main", "Un interlocuteur, un devis, un site qui tient."),
-            ("04 · Animation", "DJ, danse, ambiance — on livre la soirée, pas seulement le matériel."),
+            ("04 · Animation", "DJ, danse, ambiance. On livre la soirée, pas seulement le matériel."),
         ]
         for title, desc in services:
             self.label(title)
@@ -657,7 +674,7 @@ class BrandGuidePDF(FPDF):
             self.multi_cell(self.content_width(), 5, sample)
             self.ln(2)
 
-        self.section_title("Témoignages — ton à reproduire")
+        self.section_title("Témoignages : ton à reproduire")
         self.quote_block(
             "Un seul devis, un seul responsable, zéro surprise la veille.",
             "Corporatif · 180 personnes",
@@ -701,7 +718,7 @@ class BrandGuidePDF(FPDF):
             ]
         )
 
-        self.section_title("Polices — sources")
+        self.section_title("Polices : sources")
         self.bullet_list(
             [
                 "Barlow Condensed : fonts.google.com/specimen/Barlow+Condensed",
@@ -727,7 +744,7 @@ class BrandGuidePDF(FPDF):
         self.set_xy(14, y + 6)
         self.set_font("Barlow", "B", 12)
         self.set_text_color(31, 92, 58)
-        self.cell(0, 6, "JOHNWAY. — DOCUMENT COMPLET")
+        self.cell(0, 6, "JOHNWAY. · DOCUMENT COMPLET")
         self.set_xy(14, y + 14)
         self.set_font("Work", "", 9)
         self.set_text_color(26, 16, 12)
@@ -809,7 +826,7 @@ class BrandGuidePDF(FPDF):
         self.section_cover(
             "03",
             "Couleurs",
-            "Palette beige, brun chocolat et vert forêt — identité chaleureuse et professionnelle.",
+            "Palette beige, brun chocolat et vert forêt : identité chaleureuse et professionnelle.",
         )
         self.section_title("Couleurs de marque")
         self.body(
@@ -857,7 +874,7 @@ class BrandGuidePDF(FPDF):
             ),
         ]
         for name, role, weights, sample in fonts:
-            self.label(f"{name} — {role}")
+            self.label(f"{name} · {role}")
             self.set_font("Work", "", 9)
             self.set_text_color(107, 83, 68)
             self.cell(0, 5, f"Graisses : {weights}", new_x="LMARGIN", new_y="NEXT")
@@ -910,18 +927,18 @@ class BrandGuidePDF(FPDF):
         self.section_title("Voix de marque")
         self.body(
             "Johnway parle comme sur le terrain : phrases courtes, verbes d'action, "
-            "images concrètes (camions, convoi, site, sangles). On rassure par la "
+            "images concrètes (site, installation, sangles, lumière). On rassure par la "
             "compétence, pas par le superflu. Le ton est chaleureux mais jamais approximatif."
         )
 
         self.section_title("Principes rédactionnels")
         self.bullet_list(
             [
-                "Direct — une idée par phrase. Pas de remplissage.",
-                "Opérationnel — dire ce qu'on fait, comment, et pour qui.",
-                "Confiant — affirmations claires (« On arrive », « On porte le projet »).",
-                "Humain — témoignages, scènes, détails sensoriels.",
-                "Québécois — français du Québec, registre professionnel accessible.",
+                "Direct : une idée par phrase. Pas de remplissage.",
+                "Opérationnel : dire ce qu'on fait, comment, et pour qui.",
+                "Confiant : affirmations claires (« On arrive », « On porte le projet »).",
+                "Humain : témoignages, scènes, détails sensoriels.",
+                "Québécois : français du Québec, registre professionnel accessible.",
             ]
         )
 
@@ -929,7 +946,7 @@ class BrandGuidePDF(FPDF):
         examples = [
             (
                 "Services",
-                "On arrive en convoi. On ancre, on câble, on aligne. Le lendemain, on reprend. Vous ne soulevez rien.",
+                "On arrive sur place. On ancre, on câble, on aligne. Le lendemain, on reprend. Vous ne soulevez rien.",
             ),
             (
                 "Positionnement",
@@ -937,7 +954,7 @@ class BrandGuidePDF(FPDF):
             ),
             (
                 "Promesse",
-                "Chapiteaux, sono, installation, animation. Les camions arrivent. Le site se lève. Vous célébrez.",
+                "Chapiteaux, sono, installation, animation. Le site se lève. Vous célébrez.",
             ),
             (
                 "Corporatif",
@@ -957,7 +974,7 @@ class BrandGuidePDF(FPDF):
             [
                 "Phrases courtes et percutantes",
                 "Verbes d'action au présent",
-                "Vocabulaire terrain (convoi, lever, ancrer)",
+                "Vocabulaire terrain (lever, ancrer, installer)",
                 "Chiffres concrets (1 interlocuteur, 12 h)",
                 "Appels à l'action clairs (Réserver, Lancer un événement)",
             ],
@@ -973,7 +990,7 @@ class BrandGuidePDF(FPDF):
 
         self.section_title("Lexique fréquent")
         words = [
-            "Clé en main · Convoi · Lever un site · Chapiteau · Sono",
+            "Clé en main · Lever un site · Chapiteau · Sono · Installation",
             "Installation · Animation · Devis · Réservation · Estrie · Québec",
             "Festivals · Mariages · Corporatif · Municipal · Matériel",
         ]
@@ -995,29 +1012,16 @@ class BrandGuidePDF(FPDF):
                 "Fond crème, sections alternées beige / chocolat profond / vert profond",
                 "Header et footer : fond chocolat profond, logo clair (SVG)",
                 "Boutons primaires : vert forêt vif, texte beige, uppercase",
-                "Animations : entrées au scroll, fade-up, 0.7 s — calmes et professionnelles",
-                "Photos : terrain, équipe, festivals, mariages — lumière naturelle",
+                "Animations : entrées au scroll, fade-up, 0.7 s, calmes et professionnelles",
+                "Photos : terrain, équipe, festivals, mariages, lumière naturelle",
             ]
         )
 
-        if TRUCK_MOCKUP.exists():
-            self.section_title("Signalétique véhicule")
-            img_w = 170
-            img_h = 95
-            if self.get_y() + img_h > 270:
-                self.add_page()
-            x = (210 - img_w) / 2
-            y = self.get_y()
-            self.image(str(TRUCK_MOCKUP), x=x, y=y, w=img_w, h=img_h)
-            self.set_y(y + img_h + 4)
-            self.set_font("Work", "", 8)
-            self.set_text_color(107, 83, 68)
-            self.cell(0, 5, "Mockup camion blanc · logo sombre, espacement serré", align="C", new_x="LMARGIN", new_y="NEXT")
-            self.ln(4)
-            self.body(
-                "Sur véhicule blanc ou clair : logo sombre (#2D2D2D) avec point vert. "
-                "Respecter l'espacement serré du wordmark — ne pas élargir les lettres."
-            )
+        self.section_title("Signalétique")
+        self.body(
+            "Sur véhicule blanc ou clair : logo sombre (#2D2D2D) avec point vert. "
+            "Respecter l'espacement serré du wordmark, ne pas élargir les lettres."
+        )
 
         self.section_title("Documents et devis")
         self.bullet_list(
