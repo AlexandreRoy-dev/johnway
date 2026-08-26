@@ -22,7 +22,11 @@ Le site s’ouvre sur [http://127.0.0.1:43147](http://127.0.0.1:43147).
 - **Réservation** : panier + envoi de demande (particuliers)
 - **Devis** : formulaire événement pour entreprises, festivals et municipal
 
-Les formulaires passent par des routes API locales (`/api/reservation`, `/api/devis`) et confirment l’envoi. Branchez un courriel ou un CRM quand les identifiants sont prêts.
+Les formulaires sont envoyés par courriel via FormSubmit (`info@johnway.ca`). Confirmez l’adresse au premier envoi si besoin.
+
+## Déploiement (johnway.ca)
+
+GitHub Pages sert la branche `main`. À chaque push sur `main`, le workflow `.github/workflows/deploy.yml` exporte le site Next.js en statique (`out/`) et publie les fichiers à la racine du dépôt (`index.html`, `_next/`, etc.) avec un fichier `.nojekyll` pour désactiver Jekyll.
 
 ## Stack
 
