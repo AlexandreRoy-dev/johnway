@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev -p 43147 -H 0.0.0.0",
     "build": "next build",
-    "generate:logos": "node scripts/generate-logo-svg.mjs",
-    "generate:brand-guide": "python3 scripts/generate-brand-guide-pdf.py",
+    "generate:logos": "node scripts/generate-logo-svg.mjs && python3 scripts/generate-logo-png.py",
+    "generate:brand-guide": "npm run generate:logos && python3 scripts/generate-brand-guide-pdf.py",
     "generate:palette": "python3 scripts/generate-palette-pdf.py",
     "start": "next start -p 43147 -H 0.0.0.0",
     "lint": "eslint"
