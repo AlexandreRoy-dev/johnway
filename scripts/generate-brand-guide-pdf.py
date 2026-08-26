@@ -57,10 +57,11 @@ TOC = [
     ("05", "Ton et rédaction"),
     ("06", "Photographie et visuels"),
     ("07", "Composants UI"),
-    ("08", "Grille, formes et motion"),
-    ("09", "Applications"),
-    ("10", "Offre et messages"),
-    ("11", "Contact et ressources"),
+    ("08", "Stratégie de référencement"),
+    ("09", "Grille, formes et motion"),
+    ("10", "Applications"),
+    ("11", "Offre et messages"),
+    ("12", "Contact et ressources"),
     ("A", "Annexes"),
 ]
 
@@ -544,7 +545,7 @@ class BrandGuidePDF(FPDF):
             ]
         )
 
-        self.section_title("Cartes et sections")
+        self.section_title("Cartes, navigation et sections")
         self.bullet_list(
             [
                 "Alternance de fonds : crème, beige, chocolat profond, vert profond",
@@ -552,22 +553,103 @@ class BrandGuidePDF(FPDF):
                 "Badges / surtitres : uppercase, tracking large, vert forêt ou or",
                 "Marquee services : Barlow Bold, beige sur vert profond, séparateur / vert vif",
                 "Témoignages : bordure white/10, fond chocolat/40, quote Fraunces italic",
-            ]
-        )
-
-        self.section_title("Navigation")
-        self.bullet_list(
-            [
                 "Header fixe : fond chocolat profond, logo clair SVG, liens beige",
-                "Footer : même fond, colonnes Produits / Entreprise / Contact",
+                "Footer : colonnes Produits / Entreprise / Contact",
                 "Scroll doux : 800 ms avec offset header (~5.5 rem)",
                 "CTA header : « Réserver » vert forêt vif",
             ]
         )
 
+    def seo_section(self) -> None:
+        self.add_page()
+        self.section_title("Stratégie de référencement")
+        self.body(
+            "Le référencement Johnway repose sur des pages claires, un français québécois "
+            "naturel et des mots-clés liés à l'événementiel clé en main. Priorité : "
+            "être trouvé localement au Québec, puis convertir avec des CTA directs."
+        )
+
+        self.section_title("Balises essentielles")
+        meta_rows = [
+            ("Titre accueil", "Johnway · Événementiel clé en main"),
+            ("Description", (
+                "Location de chapiteaux, tentes, sono et matériel événementiel. "
+                "Installation, animation et coordination pour festivals, mariages "
+                "et événements partout au Québec."
+            )),
+            ("Langue", "fr-CA"),
+            ("Domaine", "johnway.ca"),
+        ]
+        for label, value in meta_rows:
+            self.label(label)
+            self.set_font("Work", "", 9)
+            self.set_text_color(26, 16, 12)
+            self.multi_cell(self.content_width(), 5, value)
+            self.ln(1)
+
+        self.section_title("Pages et titres")
+        pages = [
+            ("/", "Johnway · Événementiel clé en main"),
+            ("/produits", "Produits · Johnway"),
+            ("/devis", "Devis événement · Johnway"),
+            ("/reservation", "Réservation · Johnway"),
+            ("/contact", "Contact · Johnway"),
+            ("/a-propos", "À propos · Johnway"),
+        ]
+        self.set_font("Barlow", "B", 8)
+        self.set_fill_color(239, 230, 208)
+        for h, w in [("URL", 40), ("Titre SEO", 150)]:
+            self.cell(w, 7, h, border=1, fill=True)
+        self.ln()
+        self.set_font("Work", "", 8)
+        for url, title in pages:
+            self.cell(40, 8, url, border=1)
+            self.cell(150, 8, title, border=1)
+            self.ln()
+
+        self.section_title("Mots-clés prioritaires")
+        self.bullet_list(
+            [
+                "Événementiel clé en main · Location chapiteau · Tente événement",
+                "Sono événement · Installation événement · Matériel événementiel",
+                "Festival · Mariage · Corporatif · Municipal",
+                "Estrie · Québec · Sherbrooke · Magog · Montréal",
+            ]
+        )
+
+        self.section_title("Contenu et structure")
+        self.bullet_list(
+            [
+                "Un H1 clair par page, titres H2 en Barlow Condensed uppercase",
+                "Descriptions produits concrètes : dimensions, usage, contexte",
+                "Textes courts, verbes d'action, sans jargon corporate",
+                "Ancrage local : Estrie, Québec, zones desservies dans le copy",
+                "CTA visibles : Réserver, Devis entreprise, Lancer un événement",
+                "Images avec texte alternatif descriptif (chapiteau, tente, sono, etc.)",
+            ]
+        )
+
+        self.section_title("Bonnes pratiques")
+        self.two_column_do_dont(
+            "À faire",
+            [
+                "Utiliser le ton Johnway dans titres et descriptions",
+                "Répéter les services clés naturellement dans le copy",
+                "Maintenir johnway.ca comme URL canonique",
+                "Mettre à jour meta description si l'offre change",
+            ],
+            "À éviter",
+            [
+                "Keyword stuffing ou listes de villes artificielles",
+                "Titres génériques (« Accueil », « Services »)",
+                "Copier du contenu d'autres marques ou projets",
+                "Promesses vagues sans ancrage terrain",
+            ],
+        )
+
     def layout_motion_section(self) -> None:
         self.section_cover(
-            "08",
+            "09",
             "Grille et motion",
             "Espacements, rayons, animations et principes de mouvement.",
         )
@@ -632,7 +714,7 @@ class BrandGuidePDF(FPDF):
 
     def offer_section(self) -> None:
         self.section_cover(
-            "10",
+            "11",
             "Offre et messages",
             "Services, produits et formulations types pour la communication.",
         )
@@ -1005,7 +1087,7 @@ class BrandGuidePDF(FPDF):
 
     def applications_section(self) -> None:
         self.section_cover(
-            "09",
+            "10",
             "Applications",
             "Web, signalétique, documents et cohérence visuelle sur tous les supports.",
         )
@@ -1048,7 +1130,7 @@ class BrandGuidePDF(FPDF):
 
     def contact_section(self) -> None:
         self.section_cover(
-            "11",
+            "12",
             "Contact",
             "Coordonnées et ressources pour appliquer la charte.",
         )
@@ -1098,6 +1180,7 @@ def main() -> None:
     pdf.tone_section()
     pdf.photography_section()
     pdf.ui_section()
+    pdf.seo_section()
     pdf.layout_motion_section()
     pdf.applications_section()
     pdf.offer_section()
