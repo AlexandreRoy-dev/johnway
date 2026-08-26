@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Johnway
 
 Site vitrine de **Johnway**, entreprise d’événementiel clé en main en Estrie (Québec) : location de chapiteaux, tentes, sono et matériel, installation, animation et services connexes.
@@ -28,7 +27,12 @@ Les formulaires passent par des routes API locales (`/api/reservation`, `/api/de
 ## Stack
 
 Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
-=======
-# johnway
 
->>>>>>> 5ddc5b8e34ce7fe229ba1d705a8b3d546288ca96
+## Wordmark SVG
+
+Le logo du site, **JOHNWAY.** en Barlow Condensed Bold, est fourni en deux fichiers vectoriels. Le point reste vert forêt (`#2f8f55`) dans les deux versions.
+
+| Fichier | Lettres | Usage |
+| --- | --- | --- |
+| [`public/brand/johnway-logo-light.svg`](public/brand/johnway-logo-light.svg) | beige `#f4ebcf` | fonds sombres (comme le header inversé) |
+| [`public/brand/johnway-logo-dark.svg`](public/brand/johnway-logo-dark.svg) | gris foncé `#2d2d2d` | fonds clairs |
