@@ -11,8 +11,10 @@ ROOT = Path(__file__).resolve().parents[1]
 FONTS = Path(__file__).resolve().parent / "fonts"
 OUTPUT = ROOT / "public" / "johnway-guide-image-de-marque.pdf"
 
-LOGO_DARK = ROOT / "public" / "images" / "johnway-logo-dark.png"
-LOGO_LIGHT = ROOT / "public" / "images" / "johnway-logo-light.png"
+LOGO_DARK = ROOT / "public" / "brand" / "johnway-logo-dark.svg"
+LOGO_LIGHT = ROOT / "public" / "brand" / "johnway-logo-light.svg"
+LOGO_DARK_PNG = ROOT / "public" / "images" / "johnway-logo-dark.png"
+LOGO_LIGHT_PNG = ROOT / "public" / "images" / "johnway-logo-light.png"
 TRUCK_MOCKUP = ROOT / "public" / "images" / "johnway-white-truck-mockup.png"
 HERO_POSTER = ROOT / "public" / "images" / "hero-poster.jpg"
 EQUIPE = ROOT / "public" / "images" / "equipe.jpg"
@@ -105,8 +107,8 @@ class BrandGuidePDF(FPDF):
         self.set_fill_color(26, 16, 12)
         self.rect(0, 0, 210, 297, style="F")
 
-        if LOGO_LIGHT.exists():
-            self.image(str(LOGO_LIGHT), x=55, y=48, w=100)
+        if LOGO_LIGHT_PNG.exists():
+            self.image(str(LOGO_LIGHT_PNG), x=55, y=42, w=100)
 
         self.set_y(118)
         self.set_font("Barlow", "B", 14)
@@ -753,10 +755,10 @@ class BrandGuidePDF(FPDF):
         self.rect(10, y, 92, 42, style="F")
         self.set_fill_color(26, 16, 12)
         self.rect(108, y, 92, 42, style="F")
-        if LOGO_DARK.exists():
-            self.image(str(LOGO_DARK), x=18, y=y + 10, w=76)
-        if LOGO_LIGHT.exists():
-            self.image(str(LOGO_LIGHT), x=116, y=y + 10, w=76)
+        if LOGO_DARK_PNG.exists():
+            self.image(str(LOGO_DARK_PNG), x=18, y=y + 10, w=76)
+        if LOGO_LIGHT_PNG.exists():
+            self.image(str(LOGO_LIGHT_PNG), x=116, y=y + 10, w=76)
         self.set_y(y + 46)
         self.set_font("Work", "", 8)
         self.set_text_color(107, 83, 68)
@@ -1069,8 +1071,8 @@ class BrandGuidePDF(FPDF):
         self.set_fill_color(26, 16, 12)
         y = self.get_y()
         self.rect(10, y, 190, 36, style="F")
-        if LOGO_LIGHT.exists():
-            self.image(str(LOGO_LIGHT), x=70, y=y + 6, w=70)
+        if LOGO_LIGHT_PNG.exists():
+            self.image(str(LOGO_LIGHT_PNG), x=70, y=y + 6, w=70)
         self.set_y(y + 40)
         self.set_font("Work", "", 9)
         self.set_text_color(107, 83, 68)
