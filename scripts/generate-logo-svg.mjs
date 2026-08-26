@@ -4,7 +4,6 @@ import opentype from "opentype.js";
 
 const FONT_PATH = "/tmp/BarlowCondensed-Bold.ttf";
 const FONT_SIZE = 1000;
-// Tight brand spacing — matches truck mockup (font metrics + slight negative track)
 const LETTER_SPACING_EM = -0.055;
 const LETTER_SPACING = FONT_SIZE * LETTER_SPACING_EM;
 const TEXT = "JOHNWAY.";
@@ -36,17 +35,15 @@ for (let index = 0; index < TEXT.length; index += 1) {
   }
 
   const glyphPath = glyph.getPath(x, 0, FONT_SIZE);
-  const data = glyphPath.toPathData(2);
-
   const bbox = glyphPath.getBoundingBox();
+
   minX = Math.min(minX, bbox.x1);
   minY = Math.min(minY, bbox.y1);
   maxX = Math.max(maxX, bbox.x2);
   maxY = Math.max(maxY, bbox.y2);
 
   paths.push({
-    char,
-    data,
+    data: glyphPath.toPathData(2),
     fill: char === "." ? PERIOD_COLOR : null,
   });
 
@@ -59,9 +56,8 @@ for (let index = 0; index < TEXT.length; index += 1) {
 }
 
 const padding = FONT_SIZE * 0.04;
-const flipY = -(minY + maxY);
-const viewMinX = minX - padding;
-const viewMinY = minY - padding;
+const offsetX = padding - minX;
+const offsetY = padding - minY;
 const viewWidth = maxX - minX + padding * 2;
 const viewHeight = maxY - minY + padding * 2;
 
@@ -69,16 +65,14 @@ function buildSvg(fill) {
   const pathMarkup = paths
     .map(({ data, fill: overrideFill }) => {
       const color = overrideFill ?? fill;
-      return `  <path fill="${color}" d="${data}"/>`;
+      return `  <path fill="${color}" transform="translate(${offsetX.toFixed(2)} ${offsetY.toFixed(2)}) scale(1 -1)" d="${data}"/>`;
     })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewMinX.toFixed(2)} ${viewMinY.toFixed(2)} ${viewWidth.toFixed(2)} ${viewHeight.toFixed(2)}" role="img" aria-label="Johnway.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth.toFixed(2)} ${viewHeight.toFixed(2)}" role="img" aria-label="Johnway.">
   <title>Johnway.</title>
-  <g transform="translate(0 ${flipY.toFixed(2)}) scale(1 -1)">
 ${pathMarkup}
-  </g>
 </svg>
 `;
 }
@@ -89,5 +83,5 @@ fs.mkdirSync(outputDir, { recursive: true });
 for (const variant of variants) {
   const svg = buildSvg(variant.fill);
   fs.writeFileSync(path.join(outputDir, variant.name), svg);
-  console.log(`Wrote ${variant.name} (${viewWidth.toFixed(0)}w)`);
+  console.log(`Wrote ${variant.name}`);
 }
