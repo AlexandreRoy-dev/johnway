@@ -248,39 +248,41 @@ class BrandGuidePDF(FPDF):
         dont_title: str,
         dont_items: list[str],
     ) -> None:
-        y_start = self.get_y()
         col_w = 92
+        line_h = 5
+        title_h = 7
+        pad = 6
 
-        self.set_xy(10, y_start)
-        self.set_fill_color(239, 246, 241)
-        self.rect(10, y_start, col_w, 6 + len(do_items) * 7 + 8, style="F")
-        self.set_font("Barlow", "B", 10)
-        self.set_text_color(31, 92, 58)
-        self.cell(col_w, 7, do_title, new_x="LMARGIN", new_y="NEXT")
-        self.set_x(12)
-        self.set_font("Work", "", 9)
-        self.set_text_color(26, 16, 12)
-        for item in do_items:
-            self.set_x(12)
-            self.multi_cell(col_w - 4, 5, f"+ {item}")
+        def estimate_col_height(items: list[str]) -> float:
+            height = title_h + pad
+            for item in items:
+                lines = max(1, len(item) // 42 + 1)
+                height += lines * line_h + 1
+            return height
 
-        y_end_do = self.get_y()
+        block_h = max(estimate_col_height(do_items), estimate_col_height(dont_items))
+        self.ensure_space(block_h + 6)
 
-        self.set_xy(108, y_start)
-        self.set_fill_color(252, 242, 240)
-        self.rect(108, y_start, col_w, 6 + len(dont_items) * 7 + 8, style="F")
-        self.set_font("Barlow", "B", 10)
-        self.set_text_color(159, 45, 32)
-        self.cell(col_w, 7, dont_title, new_x="LMARGIN", new_y="NEXT")
-        self.set_xy(110, y_start + 7)
-        self.set_font("Work", "", 9)
-        self.set_text_color(26, 16, 12)
-        for item in dont_items:
-            self.set_x(110)
-            self.multi_cell(col_w - 4, 5, f"- {item}")
+        y_start = self.get_y()
 
-        y_end_dont = self.get_y()
-        self.set_y(max(y_end_do, y_end_dont) + 4)
+        def draw_column(x: float, title: str, items: list[str], fill: tuple[int, int, int], title_color: tuple[int, int, int], prefix: str) -> None:
+            self.set_fill_color(*fill)
+            self.rect(x, y_start, col_w, block_h, style="F")
+            self.set_xy(x + 2, y_start + 3)
+            self.set_font("Barlow", "B", 10)
+            self.set_text_color(*title_color)
+            self.cell(col_w - 4, title_h, title)
+            item_y = y_start + title_h + 2
+            self.set_font("Work", "", 9)
+            self.set_text_color(26, 16, 12)
+            for item in items:
+                self.set_xy(x + 2, item_y)
+                self.multi_cell(col_w - 4, line_h, f"{prefix} {item}")
+                item_y = self.get_y() + 1
+
+        draw_column(10, do_title, do_items, (239, 246, 241), (31, 92, 58), "+")
+        draw_column(108, dont_title, dont_items, (252, 242, 240), (159, 45, 32), "-")
+        self.set_y(y_start + block_h + 4)
 
     def promise_block(self, text: str, attribution: str = "") -> None:
         if ". " in text:
@@ -801,6 +803,7 @@ class BrandGuidePDF(FPDF):
         )
 
         self.section_title("Utilisations")
+        self.ensure_space(70)
         self.two_column_do_dont(
             "À faire",
             [
