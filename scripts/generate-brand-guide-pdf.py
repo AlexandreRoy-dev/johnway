@@ -678,7 +678,7 @@ class BrandGuidePDF(FPDF):
 
         self.section_title("Témoignages : ton à reproduire")
         self.quote_block(
-            "Un seul devis, un seul responsable, zéro surprise la veille.",
+            "Un interlocuteur, un devis, zéro surprise la veille.",
             "Corporatif · 180 personnes",
         )
 
@@ -961,7 +961,7 @@ class BrandGuidePDF(FPDF):
             ),
             (
                 "Corporatif",
-                "Un seul devis, un seul responsable, zéro surprise la veille.",
+                "Un interlocuteur, un devis, zéro surprise la veille.",
             ),
         ]
         for label_text, sample in examples:
