@@ -5,6 +5,13 @@ import { Marquee } from "@/components/marquee";
 import { ProductsSection } from "@/components/products-section";
 import { ServicesSection } from "@/components/services-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
+import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  path: "/",
+  description: site.description,
+});
 
 export default function Home() {
   return (

@@ -2,16 +2,26 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { site } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/a-propos",
   title: "À propos",
-  description: site.description,
-};
+  description:
+    "Location, installation, coordination, animation. Un convoi, une équipe, un responsable. Basés en Estrie, on roule partout au Québec.",
+});
 
 export default function AboutPage() {
   return (
     <div className="bg-cream pt-28 pb-24">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "À propos", path: "/a-propos" },
+        ])}
+      />
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <p className="text-xs font-bold tracking-[0.32em] text-forest uppercase">
           À propos
