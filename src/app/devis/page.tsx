@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/json-ld";
 import { QuoteForm } from "@/components/quote-form";
+import { breadcrumbJsonLd } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/devis",
   title: "Devis événement",
   description:
     "Demandez un devis clé en main pour un festival, un mariage d’entreprise, un gala ou un site municipal.",
-};
+});
 
 export default function DevisPage() {
   return (
     <div className="bg-cream pt-28 pb-24">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "Devis", path: "/devis" },
+        ])}
+      />
       <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div>
           <p className="text-xs font-bold tracking-[0.32em] text-forest uppercase">

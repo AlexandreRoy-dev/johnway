@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/json-ld";
 import { ReservationForm } from "@/components/reservation-form";
+import { breadcrumbJsonLd } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/reservation",
   title: "Réservation",
   description:
-    "Envoyez une réservation de matériel événementiel au tarif particulier.",
-};
+    "Envoyez une réservation de matériel événementiel au tarif particulier. Dates, adresse, matériel. On confirme la disponibilité.",
+});
 
 export default function ReservationPage() {
   return (
     <div className="bg-cream pt-28 pb-24">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "Réservation", path: "/reservation" },
+        ])}
+      />
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <p className="text-xs font-bold tracking-[0.32em] text-forest uppercase">
           Particuliers

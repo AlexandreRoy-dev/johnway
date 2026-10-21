@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { JsonLd } from "@/components/json-ld";
 import { QuoteForm } from "@/components/quote-form";
+import { breadcrumbJsonLd } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "Contact",
-  description: "Contactez Johnway pour une réservation ou un devis d’événement.",
-};
+  description:
+    "Contactez Johnway pour une réservation ou un devis d’événement. Estrie, Québec. info@johnway.ca. Lundi au samedi, 8 h à 18 h.",
+});
 
 export default function ContactPage() {
   return (
     <div className="bg-cream pt-28 pb-24">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2 lg:px-8">
         <div>
           <p className="text-xs font-bold tracking-[0.32em] text-forest uppercase">

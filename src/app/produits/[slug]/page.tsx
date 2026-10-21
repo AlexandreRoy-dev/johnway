@@ -4,9 +4,12 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { AddToReservation } from "@/components/add-to-reservation";
+import { JsonLd } from "@/components/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/format";
 import { categoryLabel, getProduct, products } from "@/lib/products";
+import { productJsonLd } from "@/lib/schema";
+import { pageMetadata, shortenDescription } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -18,7 +21,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Produit" };
-  return { title: product.name, description: product.description };
+  return pageMetadata({
+    path: `/produits/${product.slug}`,
+    title: product.name,
+    description: shortenDescription(product.description),
+    image: product.image,
+    imageAlt: product.name,
+  });
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -32,6 +41,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="bg-cream pt-28 pb-24">
+      <JsonLd data={productJsonLd(product)} />
       <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-2 lg:px-8">
         <div className="relative aspect-[4/3] overflow-hidden bg-chocolate-deep">
           <Image
@@ -135,7 +145,13 @@ export default async function ProductPage({ params }: Props) {
             {related.map((item) => (
               <Link key={item.slug} href={`/produits/${item.slug}`} className="bg-card">
                 <div className="relative aspect-[16/10]">
-                  <Image src={item.image} alt="" fill className="object-cover" sizes="33vw" />
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                    sizes="33vw"
+                  />
                 </div>
                 <div className="p-4">
                   <p className="font-display text-xl font-bold uppercase">{item.name}</p>

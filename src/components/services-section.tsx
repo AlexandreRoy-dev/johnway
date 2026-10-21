@@ -9,24 +9,28 @@ const services = [
     title: "Location",
     text: "Chapiteaux, tentes, sono, scène, mobilier, lumière, génératrices. Du kiosque 3×3 au village festival.",
     image: "/images/tent-exterieur.jpg",
+    alt: "Chapiteau blanc vu de l’extérieur",
   },
   {
     n: "02",
     title: "Installation",
     text: "On arrive en convoi. On ancre, on câble, on aligne. Le lendemain, on reprend. Vous ne soulevez rien.",
     image: "/images/truck.jpg",
+    alt: "Camion Johnway en route",
   },
   {
     n: "03",
     title: "Clé en main",
     text: "Un interlocuteur. Un devis. Un site qui tient. Mariage, corporatif, municipal : on porte le projet.",
     image: "/images/tables.jpg",
+    alt: "Tables dressées pour une réception",
   },
   {
     n: "04",
     title: "Animation",
     text: "DJ, danse, ambiance. On ne livre pas que du matériel : on livre la soirée.",
     image: "/images/festival.jpg",
+    alt: "Foule devant une scène de festival",
   },
 ];
 
@@ -49,7 +53,7 @@ export function ServicesSection() {
               <article className="group relative min-h-[22rem] overflow-hidden">
                 <Image
                   src={service.image}
-                  alt=""
+                  alt={service.alt}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
